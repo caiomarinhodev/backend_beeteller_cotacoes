@@ -107,11 +107,7 @@ if 'sqlite' in NAME_DB:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-elif 'postgres' in NAME_DB:
-    db_from_env = dj_database_url.config(default='postgresql://postgres:postgres@localhost:5432/{}'.format(NAME_DB),
-                                         conn_max_age=600)
-    DATABASES['default'].update(db_from_env)
-else:
+elif 'app' in NAME_DB:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -122,6 +118,11 @@ else:
             'PASSWORD': os.getenv('DB_PASS', 'supersecretpassword'),
         }
     }
+else:
+    db_from_env = dj_database_url.config(default='postgresql://postgres:postgres@localhost:5432/{}'.format(NAME_DB),
+                                         conn_max_age=600)
+    DATABASES['default'].update(db_from_env)
+    
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
